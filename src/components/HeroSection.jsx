@@ -26,7 +26,7 @@ export const HeroSection = () => {
   const [displayedCode, setDisplayedCode] = useState("");
 
   const codeSnippets = [
-    "import { Startup } from 'codewebx.dev';",
+    "import { Startup } from 'codewebx.in';",
     "",
     "const CodeWebX = new Startup({",
     "  name: 'CodeWebX',",
