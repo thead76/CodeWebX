@@ -7,8 +7,7 @@ import {
   MessageSquare,
   Mail,
   BookOpen,
-  Sun,
-  Moon,
+  // --- REMOVED: Sun, Moon ---
   Youtube,
   Volume2,
   VolumeX,
@@ -16,9 +15,8 @@ import {
   Linkedin,
 } from "lucide-react";
 import { motion } from "framer-motion";
-// --- REMOVED: cn import ---
 
-// --- ADDED: Simple 'cn' utility to remove dependency ---
+// Simple 'cn' utility
 function cn(...inputs) {
   return inputs.filter(Boolean).join(" ");
 }
@@ -26,46 +24,13 @@ function cn(...inputs) {
 const navItems = [
   { name: "Home", href: "#hero", icon: Home },
   { name: "About", href: "#about", icon: User },
-  { name: "Services", href: "#expertise", icon: Code }, // --- MODIFIED: href to #expertise ---
+  { name: "Services", href: "#expertise", icon: Code },
   { name: "Projects", href: "#projects", icon: Briefcase },
   { name: "Testimonials", href: "#testimonials", icon: MessageSquare },
   { name: "Contact", href: "#contact", icon: Mail },
 ];
 
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState("light");
-
-  useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    if (stored === "dark") {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    document.documentElement.classList.toggle("dark");
-    localStorage.setItem("theme", newTheme);
-    setTheme(newTheme);
-  };
-
-  return (
-    <button
-      onClick={toggleTheme}
-      // --- MODIFIED: Using theme-based hover (accent) ---
-      className="p-2 rounded-full hover:bg-accent dark:hover:bg-accent"
-      title="Toggle theme"
-      aria-label="Toggle theme"
-    >
-      {theme === "dark" ? (
-        <Sun className="w-5 h-5" />
-      ) : (
-        <Moon className="w-5 h-5" />
-      )}
-    </button>
-  );
-};
+// --- REMOVED: ThemeToggle component ---
 
 export const Navbar = () => {
   const [activeSection, setActiveSection] = useState("#hero");
@@ -76,6 +41,16 @@ export const Navbar = () => {
   const audioRef = useRef(null);
 
   const musicUrl = "/music.mp3";
+
+  // --- ADDED: useEffect to force dark mode on mount ---
+  useEffect(() => {
+    // Force dark mode
+    document.documentElement.classList.add("dark");
+    // Clean up light class if it exists
+    document.documentElement.classList.remove("light");
+    // Set local storage in case any other part of the app uses it
+    localStorage.setItem("theme", "dark");
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -159,14 +134,12 @@ export const Navbar = () => {
 
         {/* LinkedIn Button */}
         <motion.a
-          href="https://www.linkedin.com/company/codewebx/" // --- MODIFIED: Placeholder URL ---
+          href="https://www.linkedin.com/company/codewebx/"
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            // --- MODIFIED: Using theme-matching glassy card style ---
             "p-2 rounded-full bg-card/60 dark:bg-card/60 backdrop-blur-md",
             "text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/50",
-            // --- MODIFIED: Using theme-matching border ---
             "border border-border/30 shadow-sm",
             "flex items-center justify-center"
           )}
@@ -180,14 +153,12 @@ export const Navbar = () => {
 
         {/* Instagram Button */}
         <motion.a
-          href="https://www.instagram.com/codewebx.in/" //
+          href="https://www.instagram.com/codewebx.in/"
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            // --- MODIFIED: Using theme-matching glassy card style ---
             "p-2 rounded-full bg-card/60 dark:bg-card/60 backdrop-blur-md",
             "text-pink-600 hover:bg-pink-100 dark:hover:bg-pink-900/50",
-            // --- MODIFIED: Using theme-matching border ---
             "border border-border/30 shadow-sm",
             "flex items-center justify-center"
           )}
@@ -204,10 +175,8 @@ export const Navbar = () => {
           onClick={toggleMusic}
           disabled={!isAudioReady}
           className={cn(
-            // --- MODIFIED: Using theme-matching glassy card style ---
             "p-2 rounded-full bg-card/60 dark:bg-card/60 backdrop-blur-md",
             "text-primary hover:bg-primary/10 dark:hover:bg-primary/20",
-            // --- MODIFIED: Using theme-matching border ---
             "border border-border/30 shadow-sm",
             "flex items-center justify-center",
             !isAudioReady && "opacity-50 cursor-not-allowed"
@@ -249,10 +218,7 @@ export const Navbar = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <div
-          // --- MODIFIED: Using theme-matching glassy card style ---
-          className="flex items-center justify-center bg-card/60 dark:bg-card/60 backdrop-blur-md rounded-full shadow-lg p-2 border border-border/30"
-        >
+        <div className="flex items-center justify-center bg-card/60 dark:bg-card/60 backdrop-blur-md rounded-full shadow-lg p-2 border border-border/30">
           <div className="flex space-x-1 items-center">
             {navItems.map((item) => (
               <a
@@ -261,10 +227,8 @@ export const Navbar = () => {
                 className={cn(
                   "p-2 rounded-full transition-colors flex flex-col items-center",
                   activeSection === item.href
-                    ? // --- MODIFIED: Added gradient & shadow for "attractive" look ---
-                      "bg-gradient-to-r from-primary to-purple-600 text-white shadow-md"
-                    : // --- MODIFIED: Using theme-matching text-muted-foreground ---
-                      "text-muted-foreground hover:text-primary"
+                    ? "bg-gradient-to-r from-primary to-purple-600 text-white shadow-md"
+                    : "text-muted-foreground hover:text-primary"
                 )}
                 aria-label={item.name}
               >
@@ -274,9 +238,7 @@ export const Navbar = () => {
                 </span>
               </a>
             ))}
-            <div className="flex items-center px-2">
-              <ThemeToggle />
-            </div>
+            {/* --- REMOVED: ThemeToggle wrapper div --- */}
           </div>
         </div>
       </motion.div>
